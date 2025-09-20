@@ -1,6 +1,6 @@
 from django.db import models
 
-from models_app.models import BaseModel
+from models_app.models.base.models import BaseModel
 
 
 class Alarm(BaseModel):
@@ -14,9 +14,13 @@ class Alarm(BaseModel):
         verbose_name="Эффективное площадь рассеяния",
     )
     grade = models.IntegerField(
+        blank=True,
+        null=True,
         verbose_name="Персональная оценка",
     )
     other_user_grade = models.IntegerField(
+        blank=True,
+        null=True,
         verbose_name="Оценка другого пользователя (отправителя)",
     )
     user_id = models.UUIDField(
