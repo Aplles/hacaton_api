@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "hacaton-api"
+version = "0.1.0"
+description = "hacaton-api"
+authors = ["Hacaton team"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "*"
+djangorestframework = "*"
+django-log-request-id = "*"
+rich = "*"
+django-cors-headers = "*"
+django-service-objects = { git = "https://git.snpdev.ru/saltpepper/django-service-objects.git", branch = "master" }
+gunicorn = "*"
+psycopg2-binary = "*"
+django-environ = "*"
+django-split-settings = "*"
+drf-spectacular = "^0.27.1"
+djangorestframework-simplejwt = "^5.3.1"
+pillow = "^10.3.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "*"
+autoflake = "*"
+pyupgrade = "*"
+yesqa = "*"
+flake8 = "*"
+bandit = "*"
+pre-commit-hooks = "*"
+black = "*"
+mypy = "*"
+isort = "*"
+django-querycount = "^0.8.3"
+pyinstrument = "^4.6.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
