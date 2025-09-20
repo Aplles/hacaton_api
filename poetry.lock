@@ -573,6 +573,17 @@ files = [
 ]
 
 [[package]]
+name = "p2pnetwork"
+version = "1.2"
+description = "Python decentralized peer-to-peer network application framework."
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "p2pnetwork-1.2-py3-none-any.whl", hash = "sha256:d7ee740924f1091d67178130c1ea623d68d38060a7adf631d79b5ffc5e79635c"},
+    {file = "p2pnetwork-1.2.tar.gz", hash = "sha256:f13b86a624ab0c4ddd3b9e323b67eaa14878be264f50acae8bb4aaca7b2d4657"},
+]
+
+[[package]]
 name = "packaging"
 version = "24.1"
 description = "Core utilities for Python packages"
@@ -1381,4 +1392,4 @@ tokenize-rt = ">=2.1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "5e545c901297846b7491d6b0391b3d76ec04b30db17a04b9f2004bbe42ce09d6"
+content-hash = "ac3c4aff6e9ce1cb313738d1b4cc5ec1255f4a2a87f65610e265f307368f3b0c"
