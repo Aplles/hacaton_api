@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "solo",
     "rest_framework",
     "rest_framework.authtoken",
     "service_objects",
