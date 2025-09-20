@@ -8,10 +8,10 @@ class Alarm(BaseModel):
         verbose_name="Скорость (км/ч)",
     )
     magnetic = models.IntegerField(
-        verbose_name="Еденицы измерения магнитного поля",
+        verbose_name="Магнитное поле",
     )
     scatter_area = models.IntegerField(
-        verbose_name="Eденицы измерения площади разброса",
+        verbose_name="Эффективное площадь рассеяния",
     )
     grade = models.IntegerField(
         verbose_name="Персональная оценка",

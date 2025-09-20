@@ -9,19 +9,19 @@ class DefaultAlarmConf(SingletonModel, BaseModel):
         verbose_name="Скорость (км/ч)",
     )
     magnetic = models.IntegerField(
-        verbose_name="Еденицы измерения магнитного поля",
+        verbose_name="Магнитное поле",
     )
-    scatter_area = models.IntegerField(
-        verbose_name="Eденицы измерения площади разброса",
+    scatter_area = models.FloatField(
+        verbose_name="Эффективное площадь рассеяния",
     )
-    speed_weight = models.IntegerField(
+    speed_weight = models.FloatField(
         verbose_name="Скорость (км/ч) - вес",
     )
-    magnetic_weight = models.IntegerField(
-        verbose_name="Еденицы измерения магнитного поля - вес",
+    magnetic_weight = models.FloatField(
+        verbose_name="Магнитного поле - вес",
     )
-    scatter_weight = models.UUIDField(
-        verbose_name="Eденицы измерения площади разброса - вес",
+    scatter_weight = models.FloatField(
+        verbose_name="Эффективное площадь рассеяния - вес",
     )
 
     class Meta:

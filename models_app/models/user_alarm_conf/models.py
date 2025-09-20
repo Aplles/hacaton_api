@@ -13,27 +13,27 @@ class UserAlarmConf(SingletonModel, BaseModel):
     magnetic = models.IntegerField(
         blank=True,
         null=True,
-        verbose_name="Еденицы измерения магнитного поля",
+        verbose_name="Магнитное поле",
     )
-    scatter_area = models.IntegerField(
+    scatter_area = models.FloatField(
         blank=True,
         null=True,
-        verbose_name="Eденицы измерения площади разброса",
+        verbose_name="Эффективное площадь рассеяния",
     )
-    speed_weight = models.IntegerField(
+    speed_weight = models.FloatField(
         blank=True,
         null=True,
         verbose_name="Скорость (км/ч) - вес",
     )
-    magnetic_weight = models.IntegerField(
+    magnetic_weight = models.FloatField(
         blank=True,
         null=True,
-        verbose_name="Еденицы измерения магнитного поля - вес",
+        verbose_name="Магнитного поле - вес",
     )
-    scatter_weight = models.UUIDField(
+    scatter_weight = models.FloatField(
         blank=True,
         null=True,
-        verbose_name="Eденицы измерения площади разброса - вес",
+        verbose_name="Эффективное площадь рассеяния - вес",
     )
 
     class Meta:
