@@ -1,6 +1,8 @@
 import socket
 import threading
 import time
+from typing import Union
+
 from p2pnetwork.node import Node
 
 BROADCAST_PORT = 12000  # UDP порт для discovery
@@ -202,47 +204,31 @@ def send_mesh_messages(node):
         node.stop()
 
 
-if __name__ == "__main__":
+def is_port_in_use(port):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        return s.connect_ex(('127.0.0.1', port)) == 0
+
+
+_mesh_node_instance: Union[MeshNode, None] = None
+
+
+def get_mesh_node() -> Union['MeshNode', None]:
+    return _mesh_node_instance
+
+
+def start_mesh_node():
+    global _mesh_node_instance
+    if _mesh_node_instance is not None:
+        return _mesh_node_instance
+
     host = "0.0.0.0"
     port = TCP_PORT
     my_ip = get_my_ip()
     name = f"Peer_{my_ip}:{port}"
-
-    print(f"[INFO] Мой IP: {my_ip}")
-    print(f"[INFO] Порт: {port}")
-    print(f"[INFO] Имя узла: {name}")
-    print(f"[INFO] Автопоиск mesh-пиров ... (ждём {DISCOVERY_TIMEOUT}с)")
-
-    # Обнаруживаем пиров (broadcast + сканирование сети)
     found_peers = discover_peers(my_tcp_port=port)
-
-    if found_peers:
-        print(f"[INFO] Найденные пиры: {len(found_peers)}")
-        for peer in found_peers:
-            print(f"  - {peer[0]}:{peer[1]}")
-    else:
-        print("[INFO] Пиров не найдено — вы первый в сети!")
-    print("#" * 50)
-
-    # Запускаем узел
     node = MeshNode(host, port, name)
     node.start()
-    print(f"[INFO] Mesh node {name} стартовал на {host}:{port}")
-
-    # Автоматически подключаемся к найденным пирам
     if found_peers:
         node.auto_connect_to_peers(found_peers)
-
-    # Запускаем интерактивный интерфейс
-    sender = threading.Thread(target=send_mesh_messages, args=(node,))
-    sender.daemon = True
-    sender.start()
-
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print("\n[INFO] Останавливаем узел...")
-        node.stop()
-
-    print("[INFO] Node завершил работу.")
+    _mesh_node_instance = node
+    return node
