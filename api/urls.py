@@ -4,20 +4,28 @@ from rest_framework.response import Response
 
 from . import meshnode
 
+
 @api_view(['GET'])
 def main(request):
     data = request.GET
     node = meshnode.get_mesh_node()
-    node.send_to_nodes(
+    node.send_mesh_message({
+        "type": "message",
+        "msg": "Это всем!!",
+        "from": node.unique_id
+    })
+
+    node.send_mesh_message(
         {
             "type": "message",
-            "msg": data,
-            "from": node.name,
-        }
+            "msg": "Только избранным",
+            "from": node.unique_id
+        },
+        peer_ids=[]
     )
     return Response(str(data))
+
 
 urlpatterns = [
     path('main/', main)
 ]
-
