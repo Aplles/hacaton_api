@@ -1,11 +1,13 @@
 import random
 import time
 
+from django.db.models import Avg
 from django.db.models.signals import post_save
 
 from api import meshnode
 from api.serializers.alarms import AlarmGetSerializer
 from models_app.models import Alarm, User
+from models_app.models.default_alarm_conf.models import DefaultAlarmConf
 
 
 def generate_data():
@@ -48,3 +50,28 @@ def generate_data():
     time.sleep(time_delay * 60)
 
     return generate_data()
+
+
+def calculate_default_alarm_conf(user_code):
+    print("Агрегация настроек по умолчанию")
+    personal_alarms = Alarm.objects.filter(user_id=user_code).annotate(
+        speed_avg=Avg("speed"),
+        magnetic_avg=Avg("magnetic"),
+        scatter_area_avg=Avg("scatter_area"),
+    )
+
+    personal_alarm = personal_alarms.first()
+
+    if personal_alarm:
+        DefaultAlarmConf.objects.update(
+            speed=personal_alarm.speed_avg or 1,
+            magnetic=personal_alarm.magnetic_avg or 1.0,
+            scatter_area=personal_alarm.scatter_area_avg or 1.0,
+        )
+        print("Агрегация завершена")
+
+    # time_delay = random.randint(10, 15)
+    # time.sleep(time_delay * 60)
+
+    # return calculate_default_alarm_conf(user_code)
+
