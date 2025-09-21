@@ -9,9 +9,17 @@ from models_app.models.user_alarm_conf.models import UserAlarmConf
 @receiver(post_save, sender=Alarm)
 def calculate_grade(sender, instance, **kwargs):
     print("!" * 50)
-    alarm_conf = UserAlarmConf.objects.first()
+    alarm_conf = (
+        UserAlarmConf.objects
+        .filter(
+            speed__isnull=False,
+            magnetic__isnull=False,
+            scatter_area__isnull=False,
+        )
+        .first()
+    )
     if not alarm_conf:
-        alarm_conf = DefaultAlarmConf.objects.first()
+        alarm_conf = DefaultAlarmConf.get_solo()
 
     normalized_data = {
         "speed": instance.speed / alarm_conf.speed,

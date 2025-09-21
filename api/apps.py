@@ -14,11 +14,14 @@ class ApiConfig(AppConfig):
             return
         from models_app.models import User
         from models_app.models.default_alarm_conf.models import DefaultAlarmConf
+        from models_app.models.user_alarm_conf.models import UserAlarmConf
 
         from . import meshnode
 
         current_user = User.objects.first()
-        default_alarm_conf = DefaultAlarmConf.objects.first()
+        default_alarm_conf = DefaultAlarmConf.get_solo()
+        user_alarm_conf = UserAlarmConf.get_solo()
+
         if not current_user:
             current_user = User.objects.create_user(username=uuid.uuid4())
 
@@ -31,6 +34,9 @@ class ApiConfig(AppConfig):
                 magnetic_weight=1.0,
                 scatter_weight=1.0,
             )
+
+        if not user_alarm_conf:
+            UserAlarmConf.objects.create()
 
         from api.tasks import generate_data
 
