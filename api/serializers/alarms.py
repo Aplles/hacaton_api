@@ -1,12 +1,7 @@
 from rest_framework import serializers
 
+from api.constants import RESULT_MAPPER
 from models_app.models import Alarm
-
-RESULT_MAPPER = {
-    (0, 29): "Низкий уровень",
-    (30, 69): "Средний уровень",
-    (70, float("inf")): "Высокий уровень",
-}
 
 
 class AlarmGetSerializer(serializers.ModelSerializer):
