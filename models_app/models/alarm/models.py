@@ -13,6 +13,14 @@ class Alarm(BaseModel):
     scatter_area = models.IntegerField(
         verbose_name="Эффективное площадь рассеяния",
     )
+    latitude = models.FloatField(
+        default=0.0,
+        verbose_name="Широта",
+    )
+    longitude = models.FloatField(
+        default=0.0,
+        verbose_name="Долгота",
+    )
     grade = models.IntegerField(
         blank=True,
         null=True,
