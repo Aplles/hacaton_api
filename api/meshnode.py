@@ -1,5 +1,5 @@
-import socket
 import concurrent.futures
+import socket
 import threading
 import time
 from typing import Union
@@ -122,7 +122,7 @@ class MeshNode(Node):
 
     def node_message(self, connected_node, data):
         print(data, type(data))
-        from models_app.models import User, Alarm
+        from models_app.models import Alarm, User
 
         current_user = User.objects.first()
         if (

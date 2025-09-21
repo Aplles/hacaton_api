@@ -1,6 +1,5 @@
 import os
 import threading
-import time
 import uuid
 
 from django.apps import AppConfig
