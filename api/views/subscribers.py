@@ -33,7 +33,9 @@ class CreateSubscriberView(APIView):
             raise ValidationError({"detail": "Передайте параметр user_uuid"})
         user = User.objects.first()
 
-        result = list(set(user.codes) - set([request.data.get("user_uuid")]))
+        result = list(set(user.codes) - {request.data.get("user_uuid")})
         user.codes = result
         user.save()
-        return Response({"info": "Вы успешно отписались от пользователя"}, status=status.HTTP_200_OK)
+        return Response(
+            {"info": "Вы успешно отписались от пользователя"}, status=status.HTTP_200_OK
+        )

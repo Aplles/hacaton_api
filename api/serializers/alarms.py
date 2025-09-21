@@ -17,7 +17,11 @@ class AlarmGetSerializer(serializers.ModelSerializer):
         if not obj.grade:
             return None
         grade_description = "".join(
-            [RESULT_MAPPER[key] for key in RESULT_MAPPER.keys() if key[0] <= obj.grade <= key[1]]
+            [
+                RESULT_MAPPER[key]
+                for key in RESULT_MAPPER.keys()
+                if key[0] <= obj.grade <= key[1]
+            ]
         )
         return f"{grade_description} ({round(obj.grade)}%)"
 
@@ -25,7 +29,11 @@ class AlarmGetSerializer(serializers.ModelSerializer):
         if not obj.other_user_grade:
             return None
         grade_description = "".join(
-            [RESULT_MAPPER[key] for key in RESULT_MAPPER.keys() if key[0] <= obj.grade <= key[1]]
+            [
+                RESULT_MAPPER[key]
+                for key in RESULT_MAPPER.keys()
+                if key[0] <= obj.grade <= key[1]
+            ]
         )
         return f"{grade_description} ({round(obj.grade)}%)"
 

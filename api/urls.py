@@ -10,6 +10,5 @@ urlpatterns = [
     path("user/info/", InfoUserView.as_view()),
     path("user/clear/", ClearUserView.as_view()),
     path("subscribers/", CreateSubscriberView.as_view()),
-
     path("alarms/", AlarmGetView.as_view()),
 ]

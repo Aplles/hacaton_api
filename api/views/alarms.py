@@ -1,5 +1,5 @@
-from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.views import APIView
 
 from api.serializers.alarms import AlarmGetSerializer
 from conf.settings.rest_framework import REST_FRAMEWORK
@@ -20,4 +20,6 @@ class AlarmGetView(APIView):
         paginator = PageNumberPagination()
         paginator.page_size = REST_FRAMEWORK.get("PAGE_SIZE") or 20
         alarms = paginator.paginate_queryset(alarms, request)
-        return paginator.get_paginated_response(AlarmGetSerializer(alarms, many=True).data)
+        return paginator.get_paginated_response(
+            AlarmGetSerializer(alarms, many=True).data
+        )

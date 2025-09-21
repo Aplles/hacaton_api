@@ -1,4 +1,4 @@
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from models_app.models.alarm.models import Alarm
@@ -16,17 +16,19 @@ def calculate_grade(sender, instance, **kwargs):
     normalized_data = {
         "speed": instance.speed / alarm_conf.speed,
         "magnetic": instance.magnetic / alarm_conf.magnetic,
-        "scatter_area": instance.scatter_area / alarm_conf.scatter_area
+        "scatter_area": instance.scatter_area / alarm_conf.scatter_area,
     }
 
     contributions_data = {
         "speed": normalized_data["speed"] * alarm_conf.speed_weight,
         "magnetic": normalized_data["magnetic"] * alarm_conf.magnetic_weight,
-        "scatter_area": normalized_data["scatter_area"] * alarm_conf.scatter_weight
+        "scatter_area": normalized_data["scatter_area"] * alarm_conf.scatter_weight,
     }
 
     total_contributions = sum(contributions_data.values())
-    total_weights = alarm_conf.speed_weight + alarm_conf.magnetic_weight + alarm_conf.scatter_weight
+    total_weights = (
+        alarm_conf.speed_weight + alarm_conf.magnetic_weight + alarm_conf.scatter_weight
+    )
 
     result_in_percentage = (total_contributions / total_weights) * 100
 

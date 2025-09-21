@@ -18,16 +18,8 @@ SECRET_KEY = env("SECRET_KEY", cast=str)
 DEBUG = env("DEBUG", cast=str)
 ALLOWED_HOSTS = env("ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")])
 
-CORS_ALLOWED_ORIGINS = env(
-    "CORS_ALLOWED_ORIGINS", cast=lambda v: [s.strip() for s in v.split(",")]
-)
-
 BASE_DOMAIN = (
     f"{env('SCHEMA', default='http')}://{env('DOMAIN', default='localhost:8000')}"
-)
-
-CSRF_TRUSTED_ORIGINS = env(
-    "CSRF_TRUSTED_ORIGINS", cast=lambda v: [s.strip() for s in v.split(",")]
 )
 
 # Application definition
@@ -41,7 +33,6 @@ INSTALLED_APPS = [
     "solo",
     "rest_framework",
     "rest_framework.authtoken",
-    "service_objects",
     "corsheaders",
     "drf_spectacular",
     "api",
@@ -139,3 +130,10 @@ if os.environ.get("QUERY_COUNT_ENABLED"):
         "DISPLAY_DUPLICATES": True,
         "RESPONSE_HEADER": "X-DjangoQueryCount-Count",
     }
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = ["*"]
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None

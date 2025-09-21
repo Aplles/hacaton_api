@@ -3,8 +3,7 @@ import time
 
 from django.db.models.signals import post_save
 
-from models_app.models import User
-from models_app.models import Alarm
+from models_app.models import Alarm, User
 
 
 def generate_data():
@@ -17,12 +16,16 @@ def generate_data():
         return
 
     for _ in range(count):
-        data.append(Alarm(
-            speed=random.randint(200, 1000),  # Скорость (в км/x),
-            magnetic=random.uniform(0.01, 5.0),  # МП - магнитное поле (float),
-            scatter_area=random.uniform(2000, 15000),  # ЭПР - эффективное площадь рассеяния (метры кубические) (float),
-            user_id=user.id
-        ))
+        data.append(
+            Alarm(
+                speed=random.randint(200, 1000),  # Скорость (в км/x),
+                magnetic=random.uniform(0.01, 5.0),  # МП - магнитное поле (float),
+                scatter_area=random.uniform(
+                    2000, 15000
+                ),  # ЭПР - эффективное площадь рассеяния (метры кубические) (float),
+                user_id=user.id,
+            )
+        )
 
     alarms = Alarm.objects.bulk_create(data)
     for alarm in alarms:
