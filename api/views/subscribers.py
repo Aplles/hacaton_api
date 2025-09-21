@@ -4,7 +4,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 
-class CreateSubscriberView(APIView):
+class ListCreateSubscriberView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        codes = [
+            {"id": index, "code": code} for index, code in enumerate(request.user.codes)
+        ]
+        return Response(codes, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -19,19 +25,16 @@ class CreateSubscriberView(APIView):
 
         return Response({"info": message}, status=status.HTTP_200_OK)
 
-    def get(self, request, *args, **kwargs):
-        codes = [
-            {"id": index, "code": code} for index, code in enumerate(request.user.codes)
-        ]
-        return Response(codes, status=status.HTTP_200_OK)
+
+class DeleteSubscriberView(APIView):
 
     def delete(self, request, *args, **kwargs):
         user = request.user
-        user_uuid = request.data.get("user_uuid")
+        user_uuid = kwargs["uuid"]
         if not user_uuid:
             raise ValidationError({"detail": "Передайте параметр user_uuid"})
 
-        result = list(set(user.codes) - {request.data.get("user_uuid")})
+        result = list(set(user.codes) - {user_uuid})
         user.codes = result
         user.save()
         return Response(
