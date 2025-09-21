@@ -126,11 +126,9 @@ class MeshNode(Node):
         }, node)
 
     def node_message(self, connected_node, data):
-        # Обрабатываем привет с whomai-инфой нового peer
         if isinstance(data, dict) and data.get("type") == "whoami":
             peer_id = data["peer_id"]
             peer_name = data.get("name", "")
-            # Сохраняем reference на NodeConnection и адрес
             self.peer_info[peer_id] = {
                 "connection": connected_node,
                 "ip": connected_node.host,
@@ -140,7 +138,22 @@ class MeshNode(Node):
             print(
                 f"[PEER] Новый peer_id зарегистрирован: {peer_id} [{peer_name}] @ {connected_node.host}:{connected_node.port}")
             return
-        # При стандартном сообщении тоже можно (если вдруг обратный путь) вставить выставление peer_id
+
+        peer_already_known = False
+        for peer_id, info in self.peer_info.items():
+            if info["ip"] == connected_node.host and info["port"] == connected_node.port:
+                peer_already_known = True
+                break
+
+        if not peer_already_known:
+            print(
+                f"[AUTODISCOVERY] Peer на {connected_node.host}:{connected_node.port} не идентифицирован, просим whoami...")
+            self.send({
+                "type": "whoami",
+                "peer_id": self.unique_id,
+                "name": self.name
+            }, connected_node)
+
         print(f"\n[RECV][{connected_node.host}:{connected_node.port}] -> {data}")
 
     def node_disconnect_with_node(self, node):

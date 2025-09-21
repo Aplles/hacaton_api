@@ -21,7 +21,7 @@ def main(request):
             "msg": "Только избранным",
             "from": node.unique_id
         },
-        peer_ids=[]
+        peer_ids=["d9d7708b-62ec-4d8d-8ee6-19e0114a8678"]
     )
     return Response(str(data))
 
