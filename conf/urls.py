@@ -1,9 +1,8 @@
-from django.urls import path
-from django.urls import include
+from django.conf.urls.static import static
+from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from conf.settings import django as settings
-from django.conf.urls.static import static
 
 urlpatterns = []
 
@@ -24,10 +23,7 @@ api_docs_urlpatterns = [
     ),
 ]
 
-urlpatterns += (
-    api_urlpatterns +
-    api_docs_urlpatterns
-)
+urlpatterns += api_urlpatterns + api_docs_urlpatterns
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -37,7 +37,7 @@ LOGGING = {
             "class": "logging.FileHandler",
             "filename": FULL_LOG_PATH,
             "formatter": "standard",
-        }
+        },
     },
     "loggers": {
         "django": {
@@ -49,6 +49,6 @@ LOGGING = {
             "level": env("DJANGO_DB_LOGGER_LEVEL", cast=str, default="DEBUG"),
             "handlers": ["console", "db_file"],
             "propagate": False,
-        }
+        },
     },
 }

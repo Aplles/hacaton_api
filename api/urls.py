@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from . import meshnode
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def main(request):
     data = request.GET
     node = meshnode.get_mesh_node()
@@ -19,6 +19,4 @@ def main(request):
     return Response(str(data))
 
 
-urlpatterns = [
-    path('main/', main)
-]
+urlpatterns = [path("main/", main)]
