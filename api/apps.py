@@ -27,12 +27,12 @@ class ApiConfig(AppConfig):
 
         if not default_alarm_conf:
             DefaultAlarmConf.objects.create(
-                speed=1,
-                magnetic=1.0,
-                scatter_area=1.0,
-                speed_weight=1.0,
-                magnetic_weight=1.0,
-                scatter_weight=1.0,
+                speed=600,
+                magnetic=2.6,
+                scatter_area=8500,
+                speed_weight=2.0,
+                magnetic_weight=3.0,
+                scatter_weight=2.5,
             )
 
         if not user_alarm_conf:
