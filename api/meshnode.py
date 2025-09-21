@@ -53,7 +53,7 @@ def scan_local_network(tcp_port=TCP_PORT):
     def check_peer(ip):
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(0.5)
+            sock.settimeout(0.8)
             result = sock.connect_ex((ip, tcp_port))
             sock.close()
             if result == 0:
@@ -62,7 +62,7 @@ def scan_local_network(tcp_port=TCP_PORT):
         except Exception:
             pass
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=150) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=200) as executor:
         list(executor.map(check_peer, target_ips))
     return active_peers
 
