@@ -14,9 +14,9 @@ class AlarmGetView(APIView):
         alarm_type = request.GET.get("alarm_type")
         if alarm_type == "personal":
             print(self.request.user.id)
-            alarms = Alarm.objects.filter(user_id=user.id).order_by("-created_at")
+            alarms = Alarm.objects.filter(user_id=user.code).order_by("-created_at")
         else:
-            alarms = Alarm.objects.exclude(user_id=user.id).all().order_by("-created_at")
+            alarms = Alarm.objects.exclude(user_id=user.code).all().order_by("-created_at")
 
         start_time = request.query_params.get("start_time")
         if start_time:
