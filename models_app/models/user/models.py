@@ -3,7 +3,7 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from models_app.models import BaseModel
+from models_app.models.base.models import BaseModel
 
 
 class User(AbstractUser, BaseModel):
@@ -14,6 +14,10 @@ class User(AbstractUser, BaseModel):
     )
     codes = models.JSONField(
         default=list, blank=True, verbose_name="Коды известных пользователей"
+    )
+    ai_analyse_enabled = models.BooleanField(
+        default=False,
+        verbose_name="Включить анализ AI",
     )
 
     class Meta:

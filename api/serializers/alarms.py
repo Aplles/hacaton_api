@@ -47,4 +47,5 @@ class AlarmGetSerializer(serializers.ModelSerializer):
             "user_id",
             "longitude",
             "latitude",
+            "ai_processed",
         )

@@ -21,6 +21,7 @@ pillow = "^10.3.0"
 p2pnetwork = "^1.2"
 django-solo = "^2.4.0"
 tensorflow = "^2.20.0"
+numpy = "^2.3.3"
 
 
 [tool.poetry.group.dev.dependencies]

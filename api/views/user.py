@@ -13,6 +13,7 @@ class InfoUserView(APIView):
             {
                 "code": request.user.code,
                 "codes": request.user.codes,
+                "ai_analyse_enabled": request.user.ai_analyse_enabled
             },
             status=status.HTTP_200_OK,
         )
@@ -32,9 +33,8 @@ class ClearUserView(APIView):
 class GetUpdateClearUserSettingView(APIView):
 
     def get(self, request, *args, **kwargs):
-        user_alarm_conf = UserAlarmConf.get_solo()
         return Response(
-            UserAlarmConfSerializer(user_alarm_conf).data,
+            UserAlarmConfSerializer(UserAlarmConf.get_solo()).data,
             status=status.HTTP_200_OK,
         )
 
@@ -51,6 +51,7 @@ class GetUpdateClearUserSettingView(APIView):
 
     def put(self, request, *args, **kwargs):
         user_alarm_conf = UserAlarmConf.get_solo()
+        user_alarm_conf.ai_analyse_enabled = request.user.ai_analyse_enabled
         serializer = UserAlarmConfSerializer(user_alarm_conf, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -58,3 +59,16 @@ class GetUpdateClearUserSettingView(APIView):
             UserAlarmConfSerializer(user_alarm_conf).data,
             status=status.HTTP_200_OK,
         )
+
+
+class UserAIAnalyseUpdateView(APIView):
+
+    def patch(self, request, *args, **kwargs):
+        ai_analyse_enabled = request.data.get("ai_analyse_enabled")
+        if not isinstance(ai_analyse_enabled, bool):
+            return Response(
+                {"detail": "ai_analyse_enabled должен быть типа bool"}, status=status.HTTP_400_BAD_REQUEST
+            )
+        request.user.ai_analyse_enabled = request.data.get("ai_analyse_enabled")
+        request.user.save()
+        return Response({"detail": "AI-анализ успешно обновлен"}, status=status.HTTP_200_OK)

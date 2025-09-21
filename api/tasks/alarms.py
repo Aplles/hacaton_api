@@ -53,8 +53,8 @@ def generate_data():
         )
     print("Генерация данных завершена")
 
-    time_delay = random.randint(10, 15)
-    time.sleep(time_delay * 60)
+    time_delay = random.randint(1, 1)
+    time.sleep(time_delay * 20)
 
     return generate_data()
 

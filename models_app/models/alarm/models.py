@@ -34,6 +34,10 @@ class Alarm(BaseModel):
     user_id = models.UUIDField(
         verbose_name="ID пользователя",
     )
+    ai_processed = models.BooleanField(
+        default=False,
+        verbose_name="Обработано ИИ",
+    )
 
     class Meta:
         db_table = "alarms"
