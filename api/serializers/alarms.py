@@ -44,6 +44,7 @@ class AlarmGetSerializer(serializers.ModelSerializer):
             "speed",
             "magnetic",
             "scatter_area",
+            "grade",
             "grade_humanize",
             "other_user_grade_humanize",
             "created_at",

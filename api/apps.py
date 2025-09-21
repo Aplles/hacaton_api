@@ -1,5 +1,6 @@
 import os
 import threading
+import time
 import uuid
 
 from django.apps import AppConfig
@@ -34,13 +35,14 @@ class ApiConfig(AppConfig):
 
         from api.tasks import generate_data
 
+        def generate_alarm_data_starter():
+            generate_data()
+
         def mesh_starter():
             node = meshnode.start_mesh_node(current_user.code)
             if node:
                 print("[MESH] MeshNode стартовала!")
 
-        def generate_alarm_data_starter():
-            generate_data()
+            threading.Thread(target=generate_alarm_data_starter, daemon=True).start()
 
         threading.Thread(target=mesh_starter, daemon=True).start()
-        threading.Thread(target=generate_alarm_data_starter, daemon=True).start()
