@@ -71,9 +71,9 @@ def calculate_default_alarm_conf(user_code):
 
     if personal_alarm:
         DefaultAlarmConf.objects.update(
-            speed=personal_alarm.speed_avg or 1,
-            magnetic=personal_alarm.magnetic_avg or 1.0,
-            scatter_area=personal_alarm.scatter_area_avg or 1.0,
+            speed=personal_alarm.speed_avg or 600,
+            magnetic=personal_alarm.magnetic_avg or 2.6,
+            scatter_area=personal_alarm.scatter_area_avg or 8500,
         )
         print("Агрегация завершена")
 
