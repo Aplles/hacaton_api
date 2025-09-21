@@ -9,6 +9,11 @@ from api.serializers.alarms import AlarmGetSerializer
 from models_app.models import Alarm, User
 from models_app.models.default_alarm_conf.models import DefaultAlarmConf
 
+left_top_lat = 56.901328
+left_top_lon = 35.756830
+right_bottom_lat = 56.804210
+right_bottom_lon = 36.080000
+
 
 def generate_data():
     print("Начало генерации данных")
@@ -28,6 +33,8 @@ def generate_data():
                     2000, 15000
                 ),  # ЭПР - эффективное площадь рассеяния (метры кубические) (float),
                 user_id=user.code,
+                latitude=random.uniform(left_top_lat, right_bottom_lat),
+                longitude=random.uniform(left_top_lon, right_bottom_lon),
             )
         )
 

@@ -50,4 +50,6 @@ class AlarmGetSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "user_id",
+            "longitude",
+            "latitude",
         )

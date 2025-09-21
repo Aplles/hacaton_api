@@ -136,6 +136,8 @@ class MeshNode(Node):
                 scatter_area=data["info"]["scatter_area"],
                 other_user_grade=data["info"]["grade"],
                 user_id=data["info"]["user_id"],
+                longitude=data["info"]["longitude"],
+                latitude=data["info"]["latitude"],
             )
         print(f"\n[RECV][{connected_node.host}:{connected_node.port}] -> {data}")
 
