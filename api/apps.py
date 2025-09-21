@@ -17,10 +17,13 @@ class ApiConfig(AppConfig):
         from models_app.models.user_alarm_conf.models import UserAlarmConf
 
         from . import meshnode
+        from django.core.management import call_command
+
+        call_command('migrate', interactive=False, run_syncdb=True)
 
         current_user = User.objects.first()
-        default_alarm_conf = DefaultAlarmConf.get_solo()
-        user_alarm_conf = UserAlarmConf.get_solo()
+        default_alarm_conf = DefaultAlarmConf.objects.first()
+        user_alarm_conf = UserAlarmConf.objects.first()
 
         if not current_user:
             current_user = User.objects.create_user(username=uuid.uuid4())
