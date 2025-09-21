@@ -108,9 +108,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
-
 STATIC_URL = env("STATIC_URL", cast=str, default="/static/")
 STATIC_ROOT = os.path.join(BASE_DIR, env("STATIC_ROOT", cast=str, default="static"))
 MEDIA_ROOT = os.path.join(BASE_DIR, "uploads/")
