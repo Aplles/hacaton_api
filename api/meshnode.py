@@ -1,4 +1,5 @@
 import socket
+import concurrent.futures
 import threading
 import time
 from typing import Union
@@ -32,42 +33,37 @@ def get_network_prefix():
     return None
 
 
-def scan_local_network():
-    """Сканируем локальную сеть на наличие активных узлов"""
-    network_prefix = get_network_prefix()
-    if not network_prefix:
-        print("[WARN] Не удалось определить префикс сети")
+def scan_local_network(tcp_port=TCP_PORT):
+    my_ip = get_my_ip()
+    parts = my_ip.split('.')
+    if len(parts) != 4:
+        print('[WARN] Невалидный IP-адрес')
         return set()
 
+    prefix2 = f"{parts[0]}.{parts[1]}."
+    my_third = int(parts[2])
+    third_range = range(max(0, my_third - 2), min(255, my_third + 3))
     active_peers = set()
+    target_ips = [f"{prefix2}{third}.{fourth}"
+                  for third in third_range
+                  for fourth in range(1, 255)
+                  if f"{prefix2}{third}.{fourth}" != my_ip]
+    print(f'[SCAN] TCP-скан {len(third_range)} подсетей по {len(target_ips)} адресов...')
 
     def check_peer(ip):
-        """Проверяем доступность узла"""
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(1)
-            result = sock.connect_ex((ip, TCP_PORT))
+            sock.settimeout(0.5)
+            result = sock.connect_ex((ip, tcp_port))
             sock.close()
             if result == 0:
-                active_peers.add((ip, TCP_PORT))
-                print(f"[SCAN] Найден активный узел: {ip}:{TCP_PORT}")
+                active_peers.add((ip, tcp_port))
+                print(f"[SCAN] Найден активный узел: {ip}:{tcp_port}")
         except Exception:
             pass
 
-    print(f"[SCAN] Сканируем сеть {network_prefix}1-99...")
-
-    threads = []
-    for i in range(1, 100):
-        ip = f"{network_prefix}{i}"
-        if ip != get_my_ip():
-            thread = threading.Thread(target=check_peer, args=(ip,))
-            thread.daemon = True
-            thread.start()
-            threads.append(thread)
-
-    for thread in threads:
-        thread.join(timeout=0.5)
-
+    with concurrent.futures.ThreadPoolExecutor(max_workers=150) as executor:
+        list(executor.map(check_peer, target_ips))
     return active_peers
 
 
@@ -126,12 +122,21 @@ class MeshNode(Node):
 
     def node_message(self, connected_node, data):
         print(data, type(data))
-        from models_app.models import User
+        from models_app.models import User, Alarm
 
         current_user = User.objects.first()
-        from_uuid = data.get("from")
-        if from_uuid in current_user.codes:
-            print("Юпиё !!!")
+        if (
+            data.get("from") in current_user.codes
+                and data.get("type") == "create_alarm"
+        ):
+            print("Other peer data: ", data.get("data"))
+            Alarm.objects.create(
+                speed=data["info"]["speed"],
+                magnetic=data["info"]["magnetic"],
+                scatter_area=data["info"]["scatter_area"],
+                other_user_grade=data["info"]["grade"],
+                user_id=data["info"]["user_id"],
+            )
         print(f"\n[RECV][{connected_node.host}:{connected_node.port}] -> {data}")
 
     def node_connect_with_node(self, node):
