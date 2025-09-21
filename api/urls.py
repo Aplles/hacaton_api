@@ -22,6 +22,7 @@ def main(request):
 
 
 urlpatterns = [
+    path("test/", main),
     path("user/info/", InfoUser.as_view()),
     path("subscriber/", CreateSubscriber.as_view()),
 ]

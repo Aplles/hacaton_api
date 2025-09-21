@@ -125,6 +125,7 @@ class MeshNode(Node):
         self.connected_peers = set()
 
     def node_message(self, connected_node, data):
+        print(data, type(data))
         print(f"\n[RECV][{connected_node.host}:{connected_node.port}] -> {data}")
 
     def node_connect_with_node(self, node):
