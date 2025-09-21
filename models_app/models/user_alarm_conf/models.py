@@ -1,7 +1,7 @@
 from django.db import models
 from solo.models import SingletonModel
 
-from models_app.models import BaseModel
+from models_app.models.base.models import BaseModel
 
 
 class UserAlarmConf(SingletonModel, BaseModel):

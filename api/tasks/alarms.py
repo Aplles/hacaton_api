@@ -1,6 +1,8 @@
 import random
 import time
 
+from django.db.models.signals import post_save
+
 from models_app.models import User
 from models_app.models import Alarm
 
@@ -22,10 +24,12 @@ def generate_data():
             user_id=user.id
         ))
 
-    Alarm.objects.bulk_create(data)
+    alarms = Alarm.objects.bulk_create(data)
+    for alarm in alarms:
+        post_save.send(sender=Alarm, instance=alarm, created=True)
     print("Генерация данных завершена")
 
-    time_delay = random.randint(1, 5)
+    time_delay = random.randint(10, 15)
     time.sleep(time_delay * 60)
 
     return generate_data()

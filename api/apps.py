@@ -13,12 +13,24 @@ class ApiConfig(AppConfig):
         if os.environ.get("RUN_MAIN") != "true":
             return
         from models_app.models import User
+        from models_app.models.default_alarm_conf.models import DefaultAlarmConf
 
         from . import meshnode
 
         current_user = User.objects.first()
+        default_alarm_conf = DefaultAlarmConf.objects.first()
         if not current_user:
             current_user = User.objects.create_user(username=uuid.uuid4())
+
+        if not default_alarm_conf:
+            DefaultAlarmConf.objects.create(
+                speed=1,
+                magnetic=1.0,
+                scatter_area=1.0,
+                speed_weight=1.0,
+                magnetic_weight=1.0,
+                scatter_weight=1.0,
+            )
 
         from api.tasks import generate_data
 
