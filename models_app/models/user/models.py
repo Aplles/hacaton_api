@@ -13,9 +13,7 @@ class User(AbstractUser, BaseModel):
         verbose_name="Уникальный код",
     )
     codes = models.JSONField(
-        default=list,
-        blank=True,
-        verbose_name="Коды известных пользователей"
+        default=list, blank=True, verbose_name="Коды известных пользователей"
     )
 
     class Meta:

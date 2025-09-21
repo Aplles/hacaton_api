@@ -3,6 +3,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from . import meshnode
+from .views.subscribers import CreateSubscriber
+from .views.user import InfoUser
 
 
 @api_view(["GET"])
@@ -16,7 +18,10 @@ def main(request):
             "from": node.name,
         }
     )
-    return Response(str(data))
+    return Response(str(data) + f" {request.user.code}")
 
 
-urlpatterns = [path("main/", main)]
+urlpatterns = [
+    path("user/info/", InfoUser.as_view()),
+    path("subscriber/", CreateSubscriber.as_view()),
+]

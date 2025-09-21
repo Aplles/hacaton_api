@@ -12,8 +12,10 @@ class ApiConfig(AppConfig):
     def ready(self):
         if os.environ.get("RUN_MAIN") != "true":
             return
-        from . import meshnode
         from models_app.models import User
+
+        from . import meshnode
+
         current_user = User.objects.first()
         if not current_user:
             current_user = User.objects.create_user(username=uuid.uuid4())

@@ -150,7 +150,7 @@ class MeshNode(Node):
                 print(f"[AUTO-CONNECT] Подключаемся к {peer_ip}:{peer_port}...")
                 try:
                     self.connect_with_node(peer_ip, peer_port)
-                    time.sleep(0.1)  # Небольшая задержка между подключениями
+                    time.sleep(0.1)
                 except Exception as e:
                     print(f"[ERROR] Ошибка подключения к {peer_ip}:{peer_port}: {e}")
 
