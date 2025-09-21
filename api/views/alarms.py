@@ -21,7 +21,9 @@ class AlarmGetView(APIView):
         start_time = request.query_params.get("start_time")
         if start_time:
             alarms = alarms.filter(created_at__gte=start_time)
-            return Response(AlarmGetSerializer(alarms, many=True).data)
+            return Response({
+                "results": AlarmGetSerializer(alarms, many=True).data
+            })
 
         paginator = PageNumberPagination()
         paginator.page_size = REST_FRAMEWORK.get("PAGE_SIZE") or 20
