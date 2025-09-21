@@ -27,10 +27,10 @@ class AlarmGetSerializer(serializers.ModelSerializer):
             [
                 RESULT_MAPPER[key]
                 for key in RESULT_MAPPER.keys()
-                if key[0] <= obj.grade <= key[1]
+                if key[0] <= obj.other_user_grade <= key[1]
             ]
         )
-        return f"{grade_description} ({round(obj.grade)}%)"
+        return f"{grade_description} ({round(obj.other_user_grade)}%)"
 
     class Meta:
         model = Alarm
