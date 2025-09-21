@@ -70,8 +70,7 @@ def calculate_default_alarm_conf(user_code):
         )
         print("Агрегация завершена")
 
-    # time_delay = random.randint(10, 15)
-    # time.sleep(time_delay * 60)
+    time_delay = random.randint(10, 15)
+    time.sleep(time_delay * 60)
 
-    # return calculate_default_alarm_conf(user_code)
-
+    return calculate_default_alarm_conf(user_code)
