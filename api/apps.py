@@ -38,16 +38,14 @@ class ApiConfig(AppConfig):
         if not user_alarm_conf:
             UserAlarmConf.objects.create()
 
-        from api.tasks import generate_data
-
-        def generate_alarm_data_starter():
-            generate_data()
+        from api.tasks import generate_data, calculate_default_alarm_conf
 
         def mesh_starter():
             node = meshnode.start_mesh_node(current_user.code)
             if node:
                 print("[MESH] MeshNode стартовала!")
 
-            threading.Thread(target=generate_alarm_data_starter, daemon=True).start()
+            threading.Thread(target=generate_data, daemon=True).start()
+            threading.Thread(target=calculate_default_alarm_conf, daemon=True, args=(current_user.code,)).start()
 
         threading.Thread(target=mesh_starter, daemon=True).start()
