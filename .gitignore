@@ -5,3 +5,4 @@ logs
 uploads
 static
 .venv
+db.sqlite3
