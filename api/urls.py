@@ -9,19 +9,12 @@ from . import meshnode
 def main(request):
     data = request.GET
     node = meshnode.get_mesh_node()
-    node.send_mesh_message({
-        "type": "message",
-        "msg": "Это всем!!",
-        "from": node.unique_id
-    })
-
-    node.send_mesh_message(
+    node.send_to_nodes(
         {
             "type": "message",
-            "msg": "Только избранным",
-            "from": node.unique_id
-        },
-        peer_ids=["d9d7708b-62ec-4d8d-8ee6-19e0114a8678"]
+            "msg": data,
+            "from": node.name,
+        }
     )
     return Response(str(data))
 
