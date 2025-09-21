@@ -1,5 +1,5 @@
-from solo.models import SingletonModel
 from django.db import models
+from solo.models import SingletonModel
 
 from models_app.models import BaseModel
 

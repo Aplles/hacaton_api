@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from models_app.models import User
 
 
-class CreateSubscriber(APIView):
+class CreateSubscriberView(APIView):
 
     def post(self, request, *args, **kwargs):
         user_uuid = request.data.get("user_uuid")

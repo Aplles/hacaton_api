@@ -126,6 +126,12 @@ class MeshNode(Node):
 
     def node_message(self, connected_node, data):
         print(data, type(data))
+        from models_app.models import User
+
+        current_user = User.objects.first()
+        from_uuid = data.get("from")
+        if from_uuid in current_user.codes:
+            print("Юпиё !!!")
         print(f"\n[RECV][{connected_node.host}:{connected_node.port}] -> {data}")
 
     def node_connect_with_node(self, node):
