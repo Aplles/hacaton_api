@@ -3,17 +3,14 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from models_app.models import User
-
 
 class CreateSubscriberView(APIView):
 
     def post(self, request, *args, **kwargs):
+        user = request.user
         user_uuid = request.data.get("user_uuid")
         if not user_uuid:
             raise ValidationError({"detail": "Передайте параметр user_uuid"})
-        user = User.objects.first()
-
         message = "Вы уже подписаны на этого пользователя"
         if user_uuid not in user.codes:
             user.codes.append(user_uuid)
@@ -23,15 +20,16 @@ class CreateSubscriberView(APIView):
         return Response({"info": message}, status=status.HTTP_200_OK)
 
     def get(self, request, *args, **kwargs):
-        user = User.objects.first()
-        codes = [{"id": index, "code": code} for index, code in enumerate(user.codes)]
+        codes = [
+            {"id": index, "code": code} for index, code in enumerate(request.user.codes)
+        ]
         return Response(codes, status=status.HTTP_200_OK)
 
     def delete(self, request, *args, **kwargs):
+        user = request.user
         user_uuid = request.data.get("user_uuid")
         if not user_uuid:
             raise ValidationError({"detail": "Передайте параметр user_uuid"})
-        user = User.objects.first()
 
         result = list(set(user.codes) - {request.data.get("user_uuid")})
         user.codes = result

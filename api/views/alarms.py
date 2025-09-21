@@ -3,14 +3,14 @@ from rest_framework.views import APIView
 
 from api.serializers.alarms import AlarmGetSerializer
 from conf.settings.rest_framework import REST_FRAMEWORK
-from models_app.models import Alarm, User
+from models_app.models import Alarm
 
 
 class AlarmGetView(APIView):
 
     def get(self, request, *args, **kwargs):
+        user = request.user
         alarm_type = request.GET.get("alarm_type")
-        user = User.objects.first()
         if alarm_type == "personal":
             print(self.request.user.id)
             alarms = Alarm.objects.filter(user_id=user.id)
