@@ -1,4 +1,5 @@
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.serializers.alarms import AlarmGetSerializer
@@ -13,9 +14,14 @@ class AlarmGetView(APIView):
         alarm_type = request.GET.get("alarm_type")
         if alarm_type == "personal":
             print(self.request.user.id)
-            alarms = Alarm.objects.filter(user_id=user.id)
+            alarms = Alarm.objects.filter(user_id=user.id).order_by("-created_at")
         else:
-            alarms = Alarm.objects.exclude(user_id=user.id).all()
+            alarms = Alarm.objects.exclude(user_id=user.id).all().order_by("-created_at")
+
+        start_time = request.query_params.get("start_time")
+        if start_time:
+            alarms = alarms.filter(created_at__gte=start_time)
+            return Response(AlarmGetSerializer(alarms, many=True).data)
 
         paginator = PageNumberPagination()
         paginator.page_size = REST_FRAMEWORK.get("PAGE_SIZE") or 20
