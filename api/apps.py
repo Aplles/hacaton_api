@@ -20,9 +20,15 @@ class ApiConfig(AppConfig):
         if not current_user:
             current_user = User.objects.create_user(username=uuid.uuid4())
 
+        from api.tasks import generate_data
+
         def mesh_starter():
             node = meshnode.start_mesh_node(current_user.code)
             if node:
                 print("[MESH] MeshNode стартовала!")
 
+        def generate_alarm_data_starter():
+            generate_data()
+
         threading.Thread(target=mesh_starter, daemon=True).start()
+        threading.Thread(target=generate_alarm_data_starter, daemon=True).start()
