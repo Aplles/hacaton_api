@@ -38,7 +38,7 @@ class ApiConfig(AppConfig):
         if not user_alarm_conf:
             UserAlarmConf.objects.create()
 
-        from api.tasks import generate_data, calculate_default_alarm_conf
+        from api.tasks import calculate_default_alarm_conf, generate_data
 
         def mesh_starter():
             node = meshnode.start_mesh_node(current_user.code)
