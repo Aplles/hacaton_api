@@ -167,17 +167,15 @@ def get_mesh_node() -> Union["MeshNode", None]:
     return _mesh_node_instance
 
 
-def start_mesh_node():
+def start_mesh_node(user_code):
     global _mesh_node_instance
     if _mesh_node_instance is not None:
         return _mesh_node_instance
 
     host = "0.0.0.0"
     port = TCP_PORT
-    my_ip = get_my_ip()
-    name = f"Peer_{my_ip}:{port}"
     found_peers = discover_peers(my_tcp_port=port)
-    node = MeshNode(host, port, name)
+    node = MeshNode(host, port, user_code)
     node.start()
     if found_peers:
         node.auto_connect_to_peers(found_peers)
