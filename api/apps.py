@@ -12,15 +12,19 @@ class ApiConfig(AppConfig):
     def ready(self):
         if os.environ.get("RUN_MAIN") != "true":
             return
+        from django.core.management import call_command
+
         from models_app.models import User
         from models_app.models.default_alarm_conf.models import DefaultAlarmConf
         from models_app.models.user_alarm_conf.models import UserAlarmConf
 
         from . import meshnode
 
+        call_command('migrate', interactive=False, run_syncdb=True)
+
         current_user = User.objects.first()
-        default_alarm_conf = DefaultAlarmConf.get_solo()
-        user_alarm_conf = UserAlarmConf.get_solo()
+        default_alarm_conf = DefaultAlarmConf.objects.first()
+        user_alarm_conf = UserAlarmConf.objects.first()
 
         if not current_user:
             current_user = User.objects.create_user(username=uuid.uuid4())
