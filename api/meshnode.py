@@ -43,7 +43,6 @@ def scan_local_network(tcp_port=TCP_PORT):
     prefix2 = f"{parts[0]}.{parts[1]}."
     my_third = int(parts[2])
     third_range = range(max(0, my_third - 2), min(255, my_third + 3))
-    print(third_range)
     active_peers = set()
     target_ips = [f"{prefix2}{third}.{fourth}"
                   for third in third_range
@@ -64,7 +63,7 @@ def scan_local_network(tcp_port=TCP_PORT):
             pass
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=150) as executor:
-        list(executor.map(check_peer, target_ips))  # Force completion
+        list(executor.map(check_peer, target_ips))
     return active_peers
 
 
@@ -123,12 +122,21 @@ class MeshNode(Node):
 
     def node_message(self, connected_node, data):
         print(data, type(data))
-        from models_app.models import User
+        from models_app.models import User, Alarm
 
         current_user = User.objects.first()
-        from_uuid = data.get("from")
-        if from_uuid in current_user.codes:
-            print("Юпиё !!!")
+        if (
+            data.get("from") in current_user.codes
+                and data.get("type") == "create_alarm"
+        ):
+            print("Other peer data: ", data.get("data"))
+            Alarm.objects.create(
+                speed=data["info"]["speed"],
+                magnetic=data["info"]["magnetic"],
+                scatter_area=data["info"]["scatter_area"],
+                other_user_grade=data["info"]["grade"],
+                user_id=data["info"]["user_id"],
+            )
         print(f"\n[RECV][{connected_node.host}:{connected_node.port}] -> {data}")
 
     def node_connect_with_node(self, node):
