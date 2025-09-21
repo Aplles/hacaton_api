@@ -1,3 +1,5 @@
+import uuid
+
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
@@ -17,6 +19,15 @@ class ListCreateSubscriberView(APIView):
         user_uuid = request.data.get("user_uuid")
         if not user_uuid:
             raise ValidationError({"detail": "Передайте параметр user_uuid"})
+
+        try:
+            uuid.UUID(user_uuid)
+        except (ValueError, TypeError, AttributeError):
+            raise ValidationError({"detail": "user_uuid должен быть валидным UUID"})
+
+        if str(user.code) == user_uuid:
+            raise ValidationError({"detail": "Вы не можете подписаться на самого себя"})
+
         message = "Вы уже подписаны на этого пользователя"
         if user_uuid not in user.codes:
             user.codes.append(user_uuid)
