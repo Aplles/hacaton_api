@@ -12,12 +12,13 @@ class ApiConfig(AppConfig):
     def ready(self):
         if os.environ.get("RUN_MAIN") != "true":
             return
+        from django.core.management import call_command
+
         from models_app.models import User
         from models_app.models.default_alarm_conf.models import DefaultAlarmConf
         from models_app.models.user_alarm_conf.models import UserAlarmConf
 
         from . import meshnode
-        from django.core.management import call_command
 
         call_command('migrate', interactive=False, run_syncdb=True)
 
