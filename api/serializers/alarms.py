@@ -7,8 +7,8 @@ from models_app.models import Alarm
 class AlarmGetSerializer(serializers.ModelSerializer):
     grade_humanize = serializers.SerializerMethodField()
     other_user_grade_humanize = serializers.SerializerMethodField()
-    created_at = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S.%f')
-    updated_at = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S.%f')
+    created_at = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S.%f%z')
+    updated_at = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S.%f%z')
 
     def get_grade_humanize(self, obj):
         if not obj.grade:
