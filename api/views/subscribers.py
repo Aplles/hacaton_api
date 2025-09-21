@@ -34,7 +34,7 @@ class DeleteSubscriberView(APIView):
         if not user_uuid:
             raise ValidationError({"detail": "Передайте параметр user_uuid"})
 
-        result = list(set(user.codes) - {user_uuid})
+        result = list(set(user.codes) - {str(user_uuid)})
         user.codes = result
         user.save()
         return Response(
